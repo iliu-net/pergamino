@@ -1,0 +1,102 @@
+<?= View::instance()->render('header.html') ?>
+<nav class="cb-topbar">
+  <?= View::instance()->render('sidebar-resp.html') ?>
+  <?= Sc::go('/artifact','Listing') ?>
+</nav>
+<div class="cb-main">
+
+<h3><?=$page_head?> </h3>
+<?= isset($msg) ? '<div class="cb-showmsg">'.$msg.'</div>' : '' ?>
+
+<?php
+if ($form_command != 'create') {
+  echo Sc::go(Artifact::download_url($POST['digest'],$POST['fileExtension']),
+	      '<img src="'.Artifact::get_preview($POST['digest'],$POST['mimeType']).'"/>',
+	      ['download'=>$POST['fileName'].'.'.$POST['fileExtension']]);
+     ?>
+       <table>
+	 <tr>
+	   <th>Digest: </th>
+	   <td><?= $POST['digest'] ?></td>
+	 </tr>
+	 <tr>
+	   <th>Size: </th>
+	   <td><?= CNum::human_filesize($POST['size']) ?> </td>
+	 </tr>
+	 <tr>
+	   <th>File: </th>
+	   <td><?= $POST['fileName'].'.'.$POST['fileExtension'] ?></td>
+	 </tr>
+	 <tr>
+	   <th>MIME type: </th>
+	   <td><?= $POST['mimeType'] ?></td>
+	 </tr>
+       </table>
+  <hr/>
+     <?php
+}
+?>
+
+<form action="<?= $form_action ?>" method="POST" enctype="multipart/form-data">
+ <div class="control-group">
+ <?php
+   if ($form_command == 'create') {
+      # see: https://stackoverflow.com/questions/4328947/limit-file-format-when-using-input-type-file
+      if (is_array($accept_media)) $accept_media=implode(',',$accept_media);
+      //~ echo '<pre>'.$accept_media.'</pre>';
+     ?>
+       <p>
+	 <?= Fm::input('uploadFile',['label'=>'File:','type'=>'file','accept'=>$accept_media]) ?>
+       </p>
+     <?php
+   }
+ ?>
+   <p><?= Fm::text('docName',['label'=>'Name:','maxlength'=>64]) ?></p>
+   <p>
+     <label for="form_tags">Tags:</label>
+     <multi-input>
+  <input list="tags" id="form_tags">
+  <datalist id="tags">
+    <?php
+      foreach ($tags as $id=>$tag) {
+	echo '<option value="'.$tag.'"></option>'.PHP_EOL;
+      }
+    ?>
+  </datalist>
+</multi-input>
+   </p>
+ </div>
+ <hr/>
+ <div class="control-group">
+   <p><?= Fm::textarea('notes',['label'=>'Notes:','rows'=>8,'cols'=>80]) ?></p>
+ </div>
+ <br/>
+ <div class="control-group">
+   <input type="hidden" name="<?= $form_command ?>" value="<?= $form_command ?>"/>
+   <input type="hidden" name="tags" id="h_form_tags"/>
+   <button onclick="my_submit(form)"><?= $form_label ?></button>
+ </div>
+</form>
+
+
+</div>
+<script src="<?= Sc::url('/submodules/multi-input/multi-input.js')?>"></script>
+<script type="text/javascript">
+  tc = document.querySelector('multi-input');
+  <?php
+    if (Sc::f3()->exists('POST.tags')) {
+      foreach (Sc::f3()->get('POST.tags') as $tn) {
+	echo 'tc._addItem("'.$tags[$tn].'");'.PHP_EOL;
+      }
+    }
+  ?>
+  function my_submit(myform) {
+    tt = document.querySelector('multi-input');
+    ff = document.getElementById('h_form_tags');
+    ff.value = tt.getValues().join(',');
+    myform.submit();
+  }
+</script>
+
+<?= View::instance()->render('footer.html') ?>
+

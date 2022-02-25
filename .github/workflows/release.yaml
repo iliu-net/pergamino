@@ -1,0 +1,39 @@
+name: create release artifacts
+on:
+  release:
+    types: [created]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: create full tarball
+        run: |
+          > artifacts.txt
+          workdir=$(mktemp -d)
+          pname=pergamino
+          rc=0
+          swrel=$(cat VERSION)
+          tarball=$pname-$swrel.tar.gz
+          (
+            mkdir $workdir/$pname-$swrel
+            tar --exclude-backups --exclude-vcs -cf - . \
+              | tar -C "$workdir/$pname-$swrel" -xf -
+            tar -C "$workdir" -zcvf $tarball $pname-$swrel
+          ) || rc=$?
+          rm -rf $workdir
+          echo $tarball > artifacts.txt
+          exit $rc
+
+      - name: upload artifacts
+        run: |
+          artifacts=$(cat artifacts.txt)
+          if [ -n "$artifacts" ] ; then
+            ls -lsh $artifacts
+            gh release upload --clobber $GITHUB_REF_NAME $artifacts
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

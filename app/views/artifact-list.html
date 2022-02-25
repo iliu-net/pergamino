@@ -1,0 +1,103 @@
+<?= View::instance()->render('header.html') ?>
+<nav class="cb-topbar">
+  <?= View::instance()->render('sidebar-resp.html') ?>
+  <div>
+    <?= Sc::go('/artifact/create/'.$tagfilter,'Add New') ?>
+  </div>
+  <form action="<?= Sc::url('/artifact') ?>">
+    <div>
+      <span class="cb-nav-item">
+      <multi-input style="display:inline;">
+	<input list="tags" id="form_tags" placeholder="tags...">
+	<datalist id="tags">
+	  <option value="*NO TAG*"></option>
+	  <?php
+	    foreach ($tags as $id=>$tag) {
+	      echo '<option value="'.$tag.'"></option>'.PHP_EOL;
+	    }
+	  ?>
+	</datalist>
+      </multi-input>
+      </span>
+      <input type="hidden" name="tags" id="h_form_tags"/>
+      <span class="cb-nav-item">
+      <button onclick="my_submit(form)">Go</button>
+      </span>
+    </div>
+  </form>
+</nav>
+<div class="cb-main">
+<h3>Artifacts</h3>
+<?= isset($msg) && $msg != '' ? '<div class="cb-showmsg"><p>'.$msg.'</p></div>' : '' ?>
+<p>Records: <?= count($artifacts) ?></p>
+<table>
+  <thead>
+  <tr>
+    <th>&nbsp;</th>
+    <th>Document</th>
+    <th>Extension</th>
+    <th>Size</th>
+    <th>Tags</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+    <?php foreach ($artifacts as $row) { ?>
+    <tr>
+      <td>
+	<?= Sc::go(Artifact::download_url($row['digest'],$row['fileExtension']),
+	      '<img src="'.Artifact::get_preview($row['digest'],$row['mimeType']).'" width="128" height="128"/>',
+	      ['target'=>'_blank'])
+
+	?>
+      </td>
+      <td><?= $row['docName'] ?></td>
+      <td><?= $row['fileExtension'] ?></td>
+      <td><?= CNum::human_filesize($row['size']) ?></td>
+      <td>
+	<?php
+	  $q='';
+	  foreach ($row['tags'] as $tt) {
+	    echo $q.$tags[$tt];
+	    $q = ', ';
+	  }
+	?>
+      </td>
+      <td>
+	  <?= Sc::go(Artifact::download_url($row['digest'],$row['fileExtension']),
+	  '<img src="'.Sc::url('/ui/imgs/icons/download.png').'"/>',
+	  ['title'=>'Download','download'=>$row['fileName'].'.'.$row['fileExtension']]) ?>
+	  <?= Sc::go('/artifact/update/'.$row['id'],
+	  '<img src="'.Sc::url('/ui/imgs/icons/edit.png').'"/>',
+	  ['title'=>'Edit']) ?>
+	  <?= Sc::go('/artifact/delete/'.$row['id'],
+	  '<img src="'.Sc::url('/ui/imgs/icons/delete.png').'"/>',
+	  [ 'title' =>'Delete','confirm'=>'Are you sure?']) ?>
+      </td>
+
+    </tr>
+    <?php } ?>
+  </tbody>
+</table>
+</div>
+
+<script src="<?= Sc::url('/submodules/multi-input/multi-input.js')?>"></script>
+<script type="text/javascript">
+  tc = document.querySelector('multi-input');
+  <?php
+    if (Sc::f3()->exists('GET.tags')) {
+      foreach (explode(',',Sc::f3()->get('GET.tags')) as $tn) {
+	if (trim($tn) == '') continue;
+	echo 'tc._addItem("'.trim($tn).'");'.PHP_EOL;
+      }
+    }
+  ?>
+  function my_submit(myform) {
+    tt = document.querySelector('multi-input');
+    ff = document.getElementById('h_form_tags');
+    ff.value = tt.getValues().join(',');
+    myform.submit();
+  }
+</script>
+
+<?= View::instance()->render('footer.html') ?>

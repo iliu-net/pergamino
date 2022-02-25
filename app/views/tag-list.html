@@ -1,0 +1,42 @@
+<?= View::instance()->render('header.html') ?>
+
+<nav class="cb-topbar">
+  <?= View::instance()->render('sidebar-resp.html') ?>
+  <?= Sc::go('/tag/create','Add New') ?>
+</nav>
+<div class="cb-main">
+<h3>Tags</h3>
+<?= isset($msg) ? '<div class="cb-showmsg"><p>'.$msg.'</p></div>' : '' ?>
+
+<table>
+  <thead>
+  <tr>
+    <th>&nbsp;</th>
+    <th>id</th>
+    <th>tag</th>
+    <th>count</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+    <?php foreach ($tags as $row) { ?>
+    <tr>
+      <td>&nbsp;</td>
+      <td><?= $row['id'] ?></td>
+      <td><?= $row['tagName'] ?></td>
+      <td><?= $tagCounts[$row['id']] ?></td>
+      <td>
+	  <?= Sc::go('/tag/update/'.$row['id'],
+	  '<img src="'.Sc::url('/ui/imgs/icons/edit.png').'"/>',
+	  ['title'=>'Edit']) ?>
+	  <?= Sc::go('/tag/delete/'.$row['id'],
+	  '<img src="'.Sc::url('/ui/imgs/icons/delete.png').'"/>',
+	  ['title' =>'Delete', 'confirm'=>'Are you sure?']) ?>
+      </td>
+    </tr>
+    <?php } ?>
+  </tbody>
+</table>
+</div>
+
+<?= View::instance()->render('footer.html') ?>

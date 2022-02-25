@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <title><?= $site ?></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="<?=Sc::url($favico)?>" type="image/x-icon">
+  <link rel="stylesheet" href="<?= Sc::url('/ui/css/basic.css')?>">
+ </head>
+ <body>
+
+ <div class="cb-container">
+  <nav id="sidebar" class="cb-sidebar">
+    <img src="<?= Sc::url($logo)?>"/>
+    <h1><?= $site ?></h1>
+    <?php if (defined('NONPROD')) { ?>
+      <h2 style="color:red">NONPROD!</h2>
+    <?php } ?>
+    <h3><?= Sc::go('/','Home') ?></h3>
+    <ul>
+      <li><?= Sc::go('/artifact','Artifacts') ?></li>
+      <li><?= Sc::go('/tag','Tags') ?></li>
+    </ul>
+    <hr/>
+    <p>
+      <a href="https://github.com/iliu-net/pergamino"><img src="<?= Sc::url('/ui/imgs/github.png') ?>"  style="width: 16px; height: 16px" ></a>
+      v<?=file_get_contents('VERSION')?> (DB <?=trim(file_get_contents('schema.version'))?>)<br/>
+      <img src="<?=Sc::url('/ui/imgs/Fat-Free_Framework_logo.png')?>" style="width: 60px; height: 22px" />
+      <?= $VERSION ?>
+      <?php if (isset($_SERVER['HTTP_REMOTE_USER'])) {
+	echo '<hr/>Remote User: '.$_SERVER['HTTP_REMOTE_USER'];
+      }
+      ?>
+    </p>
+    <hr/>
+  </nav>
+  <div id="content" class="cb-content">

@@ -1,0 +1,19 @@
+  <div id="sidebar-ctl" class="cb-respbar">
+    <a href="#" onclick="sidebar_toggle()">
+      <img src="<?= Sc::url($logo)?>"/>
+    </a>
+    <?= $site ?> :
+    <?php if (defined('NONPROD')) { ?>
+      <span style="color:red">NONPROD!</span>
+    <?php } ?>
+  </div>
+  <script>
+    function sidebar_toggle() {
+      sb = document.getElementById("sidebar");
+      if (sb.style.display == "block") {
+	sb.style.display = "";
+      } else {
+	sb.style.display = "block";
+      }
+    }
+  </script>
