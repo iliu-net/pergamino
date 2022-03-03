@@ -3,6 +3,7 @@
   <?= View::instance()->render('sidebar-resp.html') ?>
   <div>
     <?= Sc::go('/artifact/create/'.$tagfilter,'Add New') ?>
+    <?= ArtifactController::scan_url('Scan') ?>
   </div>
   <form action="<?= Sc::url('/artifact') ?>">
     <div>
@@ -19,6 +20,9 @@
 	</datalist>
       </multi-input>
       </span>
+      <span class="cb-nav-item">
+	<?= Fm::select('status',$statuses,['value'=>$GET['status']]) ?>
+      </span>
       <input type="hidden" name="tags" id="h_form_tags"/>
       <span class="cb-nav-item">
       <button onclick="my_submit(form)">Go</button>
@@ -27,7 +31,9 @@
   </form>
 </nav>
 <div class="cb-main">
-<h3>Artifacts</h3>
+<h3>Artifacts
+<?php if ($GET['status'] != -1) echo '('.$statuses[$GET['status']].')'; ?>
+</h3>
 <?= isset($msg) && $msg != '' ? '<div class="cb-showmsg"><p>'.$msg.'</p></div>' : '' ?>
 <p>Records: <?= count($artifacts) ?></p>
 <table>
@@ -37,6 +43,9 @@
     <th>Document</th>
     <th>Extension</th>
     <th>Size</th>
+    <?php
+      if ($GET['status'] == -1) echo '<th>Status</th>';
+    ?>
     <th>Tags</th>
     <th>Actions</th>
   </tr>
@@ -54,6 +63,11 @@
       <td><?= $row['docName'] ?></td>
       <td><?= $row['fileExtension'] ?></td>
       <td><?= CNum::human_filesize($row['size']) ?></td>
+    <?php
+      if ($GET['status'] == -1) {
+	echo '<td>'.$statuses[$row['status']].'</td>';
+      }
+    ?>
       <td>
 	<?php
 	  $q='';

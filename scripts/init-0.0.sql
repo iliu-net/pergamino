@@ -7,6 +7,9 @@ CREATE TABLE IF NOT EXISTS daArtifact (
   fileName VARCHAR (256) NOT NULL DEFAULT "",
   fileExtension CHAR (16) NOT NULL DEFAULT "",
   mimeType VARCHAR (64) NOT NULL DEFAULT "application/octet-stream",
+  status INT NOT NULL DEFAULT 0,
+  created DATE NOT NULL DEFAULT "1970-01-01",
+  expires DATE,
   notes TEXT NOT NULL DEFAULT "",
   PRIMARY KEY (id)
 ) DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci' AUTO_INCREMENT=1;

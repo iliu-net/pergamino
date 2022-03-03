@@ -10,3 +10,6 @@
 [submodule "submodules/multi-input"]
 	path = submodules/multi-input
 	url = https://github.com/samdutton/multi-input.git
+[submodule "submodules/Pikaday"]
+	path = submodules/Pikaday
+	url = https://github.com/Pikaday/Pikaday.git

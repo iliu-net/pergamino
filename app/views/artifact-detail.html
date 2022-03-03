@@ -5,6 +5,8 @@
 </nav>
 <div class="cb-main">
 
+<script src="<?= Sc::url('/submodules/Pikaday/pikaday.js') ?>"></script>
+
 <h3><?=$page_head?> </h3>
 <?= isset($msg) ? '<div class="cb-showmsg">'.$msg.'</div>' : '' ?>
 
@@ -51,7 +53,9 @@ if ($form_command != 'create') {
      <?php
    }
  ?>
+   <p><?= Fm::text('created',['label'=>'Created:','readonly','default'=>date('Y-m-d')]) ?></p>
    <p><?= Fm::text('docName',['label'=>'Name:','maxlength'=>64]) ?></p>
+   <p><?= Fm::select('status',$statuses,['label'=>'Status:','default'=>0]) ?></p>
    <p>
      <label for="form_tags">Tags:</label>
      <multi-input>
@@ -64,6 +68,17 @@ if ($form_command != 'create') {
     ?>
   </datalist>
 </multi-input>
+   </p>
+   <p>
+     <?= Fm::select('expiration_type',
+			[0=>'None', 1=>'Date', 2=>'Months'],
+			['label'=>'Expiration?: ','default'=>0, 'onchange'=>'chgExpType(this)'])?>
+   </p>
+   <p id="inp_expiration_month" style="display:table-row;">
+     <?= Fm::input('months',['label'=>'Months:','maxlenth'=>4]) ?>
+   </p>
+   <p id="inp_expiration_date" style="display:table-row;">
+     <?= Fm::input('expdate',['label'=>'Date:','maxlenth'=>10]) ?>
    </p>
  </div>
  <hr/>
@@ -96,6 +111,35 @@ if ($form_command != 'create') {
     ff.value = tt.getValues().join(',');
     myform.submit();
   }
+  var picker = new Pikaday({
+    field: document.getElementById('form_expdate'),
+    format: 'YYYY-MM-DD',
+    toString(date, format) {
+      const day=('0'+date.getDate()).slice(-2);
+      const month=('0'+(date.getMonth()+1)).slice(-2);
+      const year=date.getFullYear();
+      return `${year}-${month}-${day}`;
+    }
+  });
+  function chgExpType(inp) {
+    ty = inp.options[inp.selectedIndex].value;
+    console.log("Selected: "+ty);
+    mrow = document.getElementById('inp_expiration_month');
+    drow = document.getElementById('inp_expiration_date');
+    if (ty == 0) {
+      mrow.style = 'display:none;';
+      drow.style = 'display:none;';
+    } else if (ty == 1) {
+      mrow.style = 'display:none;';
+      drow.style = 'display:table-row;';
+    } else if (ty == 2) {
+      mrow.style = 'display:table-row;';
+      drow.style = 'display:none;';
+    }
+  }
+  chgExpType(document.getElementById('form_expiration_type'));
+
+
 </script>
 
 <?= View::instance()->render('footer.html') ?>

@@ -28,4 +28,9 @@ class Tag extends CBaseModel {
     $this->db->exec('DELETE FROM daArtifactTags WHERE tagId = ?',$id);
   }
 
+  public function new_tag($tagname) {
+    $q = $this->find(['tagName = ?',$tagname]);
+    if (count($q) == 1) return;
+    $this->db->exec('INSERT INTO daTag (tagName) VALUES (?)',$tagname);
+  }
 }

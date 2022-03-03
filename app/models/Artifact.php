@@ -108,7 +108,7 @@ class Artifact extends CBaseModel {
     if (!$tags) return;
     if (!is_array($tags)) $tags = [ $tags ];
     foreach ($tags as $ti) {
-      echo "ID: $id, TI=$ti\n";
+      //~ echo "ID: $id, TI=$ti\n";
       $this->db->exec('INSERT INTO daArtifactTags (artifactId,tagId) VALUES (?,?)',
 		      [ $id, $ti ]);
 

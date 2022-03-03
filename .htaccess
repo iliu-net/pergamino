@@ -16,8 +16,8 @@ RewriteRule .* index.php [L,QSA]
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
 
 # Override php.ini settings
-php_value upload_max_filesize  10M
-php_value post_max_size 14M
+php_value upload_max_filesize  25M
+php_value post_max_size 26M
 
-# 14MB
-LimitRequestBody 14680064
+# 26MB
+LimitRequestBody 27262976
