@@ -1,1 +1,1 @@
-init-0.0.sql
+init-1.0.sql
