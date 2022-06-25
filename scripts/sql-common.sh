@@ -13,6 +13,7 @@ if [ -z "$root_passwd" ] || [ -z "$db_host" ] ; then
 fi
 
 apphome=$(readlink -f $(dirname $0)/..)
+appname=$(basename "$apphome")
 
 param() {
   local configs="$apphome/config/config.ini"
