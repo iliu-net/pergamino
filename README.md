@@ -32,6 +32,8 @@ Changing upload size:
 
 # Changes
 
+- 1.2.0-next
+
 - 1.2.0
   - new generate previews
   - switched to fatfree-core submodule
