@@ -264,16 +264,18 @@ class ArtifactController extends CBaseController {
 	  }
 
 
-	  echo Sc::go('/artifact/msg/New artifact created','listing');
-	  echo '<pre>';
-	  echo 'POST'.PHP_EOL;
-	  var_dump($f3->get('POST'));
-	  echo 'TAGS'.PHP_EOL;
-	  var_dump($tag_list);
-	  echo '</pre>';
-	  return;
+	  //~ echo Sc::go('/artifact/msg/New artifact created','listing');
+	  //~ echo '<pre>';
+	  //~ echo 'POST'.PHP_EOL;
+	  //~ var_dump($f3->get('POST'));
+	  //~ echo 'TAGS'.PHP_EOL;
+	  //~ var_dump($tag_list);
+	  //~ echo '</pre>';
+	  //~ return;
 
-	  $f3->reroute('/artifact/msg/New artifact created');
+	  //~ $f3->reroute('/artifact/msg/New artifact created');
+	  $f3->reroute('/artifact/gthumb/'.$id.'/New artifact '.$id.'  created');
+
 	  return;
 	}
       }
@@ -348,7 +350,8 @@ class ArtifactController extends CBaseController {
       //~ var_dump($tag_list);
       //~ echo '</pre>';
       //~ return;
-      $f3->reroute('/artifact/msg/Entry '.$params['id'].'  updated');
+      //~ $f3->reroute('/artifact/msg/Entry '.$params['id'].'  updated');
+      $f3->reroute('/artifact/gthumb/'.$params['id'].'/Entry '.$params['id'].'  updated');
       return;
     }
     $art->get_by_id($params['id']);
@@ -395,6 +398,19 @@ class ArtifactController extends CBaseController {
     }
 
     echo View::instance()->render('artifact-detail.html');
+  }
+  public function genthumb($f3,$params) {
+    if (isset($params['id'])) {
+      $art = new Artifact($this->db);
+      $art->get_by_id($params['id']);
+      if ($f3->get('POST.id')) {
+	Artifact::gen_preview($f3->get('POST.digest'),
+			  $f3->get('POST.mimeType'),
+			  $f3->get('POST.fileExtension'));
+      }
+    }
+    $msg = isset($params['msg']) ? $params['msg'] : '';
+    $f3->reroute('/artifact/msg/'.$msg);
   }
 
   public function delete($f3,$params) {

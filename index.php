@@ -21,7 +21,7 @@ if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
     }
   }
 }
-$f3=require('submodules/fatfree/lib/base.php');
+$f3=require('submodules/fatfree-core/base.php');
 $f3->config('config/config.ini');
 
 define('APPBASE',basename(dirname(realpath(__FILE__))));

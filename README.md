@@ -2,13 +2,6 @@
 
 Paperless Office tool
 
-# TODO
-
-- OCR
-- Scheduled tasks:
-  - create preview's
-  - check files that not in the artifact table
-
 # Configuration
 
 Changing upload size:
@@ -31,25 +24,17 @@ Changing upload size:
 - lookup nginx upload size
 
 
-```php
-<table>
-  <?php foreach (['upload_max_filesize',
-		'post_max_size',
-		'upload_tmp_dir',
-		'open_basedir',
-		'sys_temp_dir',
-		] as $k) {
-		?>
-		<tr>
-		  <th><?= $k ?></th>
-		  <td><?= ini_get($k) ?></td>
-		</tr>
-		<?php } ?>
+# TODO
 
-</table>
-```
+- OCR
+- Scheduled tasks:
+  - check files that not in the artifact table
+
 # Changes
 
+- 1.2.0
+  - new generate previews
+  - switched to fatfree-core submodule
 - 1.1.0
   - upgrading F3 to 3.8.0
   - fixing issues with php8.0 testing.  It nows requires php7 or newer.
