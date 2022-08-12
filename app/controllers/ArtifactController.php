@@ -58,6 +58,14 @@ class ArtifactController extends CBaseController {
       $statuses[$k] = $v;
     }
     $f3->set('statuses',$statuses);
+    $f3->set('expire_opts',[
+      0 => ' ',
+      -1 => 'Before',
+      1 => 'After',
+    ]);
+    if (!$f3->exists('GET.expire_opts')) $f3->set('GET.expire_opts','0');
+    if (!$f3->exists('GET.expdate') || $f3->get('GET.expire_opts') == 0 ) $f3->set('GET.expdate','');
+
     if (!$f3->exists('GET.status')) $f3->set('GET.status',0);
 
     $tag_filter = [];
@@ -80,6 +88,20 @@ class ArtifactController extends CBaseController {
     } else {
       $filter = ['status = ?', $f3->get('GET.status')];
     }
+    if ($f3->get('GET.expire_opts') != 0 && $f3->get('GET.expdate') != '') {
+      if (is_null($filter)) {
+	$filter = ['' ];
+      } else {
+	$filter[0] .= ' AND ';
+      }
+      if ($f3->get('GET.expire_opts') == -1) {
+	$filter[0] .= 'expires < ?';
+      } else {
+	$filter[0] .= 'expires > ?';
+      }
+      $filter[] = $f3->get('GET.expdate');
+    }
+    //~ $f3->set('msg',print_r($filter,true));
 
     foreach ($arts->find($filter) as $row) {
       $id = $row['id'];
@@ -318,14 +340,14 @@ class ArtifactController extends CBaseController {
       $art->reset();
       $art->edit($params['id']);
 
-      echo Sc::go('/artifact/msg/Entry '.$params['id'].'  updated','listing');
-      echo '<pre>';
-      echo 'POST'.PHP_EOL;
-      var_dump($f3->get('POST'));
-      echo 'TAGS'.PHP_EOL;
-      var_dump($tag_list);
-      echo '</pre>';
-      return;
+      //~ echo Sc::go('/artifact/msg/Entry '.$params['id'].'  updated','listing');
+      //~ echo '<pre>';
+      //~ echo 'POST'.PHP_EOL;
+      //~ var_dump($f3->get('POST'));
+      //~ echo 'TAGS'.PHP_EOL;
+      //~ var_dump($tag_list);
+      //~ echo '</pre>';
+      //~ return;
       $f3->reroute('/artifact/msg/Entry '.$params['id'].'  updated');
       return;
     }

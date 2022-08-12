@@ -62,6 +62,7 @@ if ($form_command != 'create') {
   <input list="tags" id="form_tags">
   <datalist id="tags">
     <?php
+      asort($tags);
       foreach ($tags as $id=>$tag) {
 	echo '<option value="'.$tag.'"></option>'.PHP_EOL;
       }
@@ -100,8 +101,13 @@ if ($form_command != 'create') {
   tc = document.querySelector('multi-input');
   <?php
     if (Sc::f3()->exists('POST.tags')) {
+      $tt = [];
       foreach (Sc::f3()->get('POST.tags') as $tn) {
-	echo 'tc._addItem("'.$tags[$tn].'");'.PHP_EOL;
+	$tt[] = $tags[$tn];
+      }
+      sort($tt);
+      foreach ($tt as $t) {
+	echo 'tc._addItem("'.$t.'");'.PHP_EOL;
       }
     }
   ?>

@@ -24,7 +24,7 @@
       <td>&nbsp;</td>
       <td><?= $row['id'] ?></td>
       <td><?= $row['tagName'] ?></td>
-      <td><?= $tagCounts[$row['id']] ?></td>
+      <td><?= $tagCounts[$row['id']] ?? '' ?></td>
       <td>
 	  <?= Sc::go('/tag/update/'.$row['id'],
 	  '<img src="'.Sc::url('/ui/imgs/icons/edit.png').'"/>',

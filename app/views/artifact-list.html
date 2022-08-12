@@ -1,4 +1,6 @@
 <?= View::instance()->render('header.html') ?>
+<script src="<?= Sc::url('/submodules/Pikaday/pikaday.js') ?>"></script>
+
 <nav class="cb-topbar">
   <?= View::instance()->render('sidebar-resp.html') ?>
   <div>
@@ -13,6 +15,7 @@
 	<datalist id="tags">
 	  <option value="*NO TAG*"></option>
 	  <?php
+	    asort($tags);
 	    foreach ($tags as $id=>$tag) {
 	      echo '<option value="'.$tag.'"></option>'.PHP_EOL;
 	    }
@@ -22,6 +25,13 @@
       </span>
       <span class="cb-nav-item">
 	<?= Fm::select('status',$statuses,['value'=>$GET['status']]) ?>
+      </span>
+      <span class="cb-nav-item">
+	Expires:
+	<?= Fm::select('expire_opts',$expire_opts,['onchange'=>'chgExpFilter(this)','value'=>$GET['expire_opts']]) ?>
+	<span id="cb-search-expires">
+	  <?= Fm::input('expdate',['maxlenth'=>10, 'value'=>$GET['expdate']]) ?>
+	</span>
       </span>
       <input type="hidden" name="tags" id="h_form_tags"/>
       <span class="cb-nav-item">
@@ -46,6 +56,7 @@
     <?php
       if ($GET['status'] == -1) echo '<th>Status</th>';
     ?>
+    <th>Expiration</th>
     <th>Tags</th>
     <th>Actions</th>
   </tr>
@@ -70,11 +81,17 @@
     ?>
       <td>
 	<?php
-	  $q='';
+	  echo $row['expires'];
+	?>
+      </td>
+      <td>
+	<?php
+	  $tl = [];
 	  foreach ($row['tags'] as $tt) {
-	    echo $q.$tags[$tt];
-	    $q = ', ';
+	    $tl[] = $tags[$tt];
 	  }
+	  sort($tl);
+	  echo implode(', ',$tl);
 	?>
       </td>
       <td>
@@ -100,7 +117,9 @@
   tc = document.querySelector('multi-input');
   <?php
     if (Sc::f3()->exists('GET.tags')) {
-      foreach (explode(',',Sc::f3()->get('GET.tags')) as $tn) {
+      $tl = explode(',',Sc::f3()->get('GET.tags'));
+      sort($tl);
+      foreach ($tl as $tn) {
 	if (trim($tn) == '') continue;
 	echo 'tc._addItem("'.trim($tn).'");'.PHP_EOL;
       }
@@ -112,6 +131,28 @@
     ff.value = tt.getValues().join(',');
     myform.submit();
   }
+  var picker = new Pikaday({
+    field: document.getElementById('form_expdate'),
+    format: 'YYYY-MM-DD',
+    toString(date, format) {
+      const day=('0'+date.getDate()).slice(-2);
+      const month=('0'+(date.getMonth()+1)).slice(-2);
+      const year=date.getFullYear();
+      return `${year}-${month}-${day}`;
+    }
+  });
+  function chgExpFilter(inp) {
+    ty = inp.options[inp.selectedIndex].value;
+    console.log("Selected: "+ty);
+    ctl = document.getElementById('cb-search-expires');
+    if (ty == '0') {
+      ctl.style = 'display:none';
+    } else {
+      ctl.style = 'display:inline';
+    }
+  }
+  chgExpFilter(document.getElementById('form_expire_opts'));
+
 </script>
 
 <?= View::instance()->render('footer.html') ?>
