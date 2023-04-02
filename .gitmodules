@@ -1,15 +1,9 @@
 [submodule "submodules/my-gh-tools"]
 	path = submodules/my-gh-tools
 	url = https://github.com/TortugaLabs/my-gh-tools.git
-[submodule "submodules/html2text"]
-	path = submodules/html2text
-	url = https://github.com/mtibben/html2text.git
 [submodule "submodules/multi-input"]
 	path = submodules/multi-input
 	url = https://github.com/samdutton/multi-input.git
 [submodule "submodules/Pikaday"]
 	path = submodules/Pikaday
 	url = https://github.com/Pikaday/Pikaday.git
-[submodule "submodules/fatfree-core"]
-	path = submodules/fatfree-core
-	url = https://github.com/bcosca/fatfree-core.git

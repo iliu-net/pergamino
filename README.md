@@ -29,11 +29,20 @@ Changing upload size:
 - OCR
 - Scheduled tasks:
   - check files that not in the artifact table
+- separation
+  - create a reference URL field
+  - create an API
+    - tags: CRUD
+    - articles: CRUD
+- tag list: sortable
+
 
 # Changes
 
 - 1.2.0-next
-
+  - multiple tag searchs does AND instead of OR.
+  - tag-list hyperlinked to arttifacts for that tag.
+  - switching php dependancies to composer
 - 1.2.0
   - new generate previews
   - switched to fatfree-core submodule
