@@ -1,6 +1,3 @@
-[submodule "submodules/my-gh-tools"]
-	path = submodules/my-gh-tools
-	url = https://github.com/TortugaLabs/my-gh-tools.git
 [submodule "submodules/multi-input"]
 	path = submodules/multi-input
 	url = https://github.com/samdutton/multi-input.git
