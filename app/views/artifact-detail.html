@@ -5,8 +5,6 @@
 </nav>
 <div class="cb-main">
 
-<script src="<?= Sc::url('/submodules/Pikaday/pikaday.js') ?>"></script>
-
 <h3><?=$page_head?> </h3>
 <?= isset($msg) ? '<div class="cb-showmsg">'.$msg.'</div>' : '' ?>
 
@@ -79,7 +77,7 @@ if ($form_command != 'create') {
      <?= Fm::input('months',['label'=>'Months:','maxlenth'=>4]) ?>
    </p>
    <p id="inp_expiration_date" style="display:table-row;">
-     <?= Fm::input('expdate',['label'=>'Date:','maxlenth'=>10]) ?>
+     <?= Fm::date('expdate',['label'=>'Date:','maxlenth'=>10]) ?>
    </p>
  </div>
  <hr/>
@@ -117,16 +115,6 @@ if ($form_command != 'create') {
     ff.value = tt.getValues().join(',');
     myform.submit();
   }
-  var picker = new Pikaday({
-    field: document.getElementById('form_expdate'),
-    format: 'YYYY-MM-DD',
-    toString(date, format) {
-      const day=('0'+date.getDate()).slice(-2);
-      const month=('0'+(date.getMonth()+1)).slice(-2);
-      const year=date.getFullYear();
-      return `${year}-${month}-${day}`;
-    }
-  });
   function chgExpType(inp) {
     ty = inp.options[inp.selectedIndex].value;
     console.log("Selected: "+ty);
