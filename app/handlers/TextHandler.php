@@ -1,5 +1,4 @@
 <?php
-require_once('submodules/html2text/src/Html2Text.php');
 
 class TextHandler implements MimeHandler {
   const MIME_TYPE = 'text/*';
