@@ -3,6 +3,7 @@ class ArtifactController extends CBaseController {
   public static $statuses = [
     0 => 'active',
     1 => 'retired',
+    2 => 'archived',
   ];
 
   static public function scan_url($desc) {
