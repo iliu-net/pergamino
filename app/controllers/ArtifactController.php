@@ -3,6 +3,7 @@ class ArtifactController extends CBaseController {
   public static $statuses = [
     0 => 'active',
     1 => 'retired',
+    2 => 'archived',
   ];
 
   static public function scan_url($desc) {
@@ -112,10 +113,10 @@ class ArtifactController extends CBaseController {
 	    //~ # Row without tags...
 	    //~ if (!isset($tag_filter[0])) continue;
 	  //~ }
-	  $found = false;
+	  $found = true;
 	  foreach ($tag_filter as $tf) {
-	    if (isset($tagdata[$id][$tf])) {
-	      $found = true;
+	    if (!isset($tagdata[$id][$tf])) {
+	      $found = false;
 	      break;
 	    }
 	  }

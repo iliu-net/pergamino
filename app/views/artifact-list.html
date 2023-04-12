@@ -1,5 +1,4 @@
 <?= View::instance()->render('header.html') ?>
-<script src="<?= Sc::url('/submodules/Pikaday/pikaday.js') ?>"></script>
 
 <nav class="cb-topbar">
   <?= View::instance()->render('sidebar-resp.html') ?>
@@ -30,7 +29,7 @@
 	Expires:
 	<?= Fm::select('expire_opts',$expire_opts,['onchange'=>'chgExpFilter(this)','value'=>$GET['expire_opts']]) ?>
 	<span id="cb-search-expires">
-	  <?= Fm::input('expdate',['maxlenth'=>10, 'value'=>$GET['expdate']]) ?>
+	  <?= Fm::date('expdate',['maxlenth'=>10, 'value'=>$GET['expdate']]) ?>
 	</span>
       </span>
       <input type="hidden" name="tags" id="h_form_tags"/>
@@ -131,16 +130,6 @@
     ff.value = tt.getValues().join(',');
     myform.submit();
   }
-  var picker = new Pikaday({
-    field: document.getElementById('form_expdate'),
-    format: 'YYYY-MM-DD',
-    toString(date, format) {
-      const day=('0'+date.getDate()).slice(-2);
-      const month=('0'+(date.getMonth()+1)).slice(-2);
-      const year=date.getFullYear();
-      return `${year}-${month}-${day}`;
-    }
-  });
   function chgExpFilter(inp) {
     ty = inp.options[inp.selectedIndex].value;
     console.log("Selected: "+ty);

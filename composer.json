@@ -1,0 +1,6 @@
+{
+    "require": {
+        "bcosca/fatfree-core": "^3.8",
+        "html2text/html2text": "^4.3"
+    }
+}

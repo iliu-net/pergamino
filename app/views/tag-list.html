@@ -22,9 +22,11 @@
     <?php foreach ($tags as $row) { ?>
     <tr>
       <td>&nbsp;</td>
-      <td><?= $row['id'] ?></td>
-      <td><?= $row['tagName'] ?></td>
-      <td><?= $tagCounts[$row['id']] ?? '' ?></td>
+      <td align="right"><?= $row['id'] ?></td>
+      <td>
+	<?=  Sc::go('/artifact?tags='.urlencode($row['tagName']) , $row['tagName']) ?>
+      </td>
+      <td align="right"><?= $tagCounts[$row['id']] ?? '' ?></td>
       <td>
 	  <?= Sc::go('/tag/update/'.$row['id'],
 	  '<img src="'.Sc::url('/ui/imgs/icons/edit.png').'"/>',

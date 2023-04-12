@@ -24,21 +24,5 @@ Changing upload size:
 - lookup nginx upload size
 
 
-# TODO
 
-- OCR
-- Scheduled tasks:
-  - check files that not in the artifact table
 
-# Changes
-
-- 1.2.0
-  - new generate previews
-  - switched to fatfree-core submodule
-- 1.1.0
-  - upgrading F3 to 3.8.0
-  - fixing issues with php8.0 testing.  It nows requires php7 or newer.
-  - Clean-ups
-  - Tweak tag displays
-  - Show expiration date in artifact listings
-  - Artifact list: filter by expiration date
