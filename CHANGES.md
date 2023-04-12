@@ -1,8 +1,8 @@
 # Changes
 
-- 1.2.0-next
+- 1.3.0
   - multiple tag searchs does AND instead of OR.
-  - tag-list hyperlinked to arttifacts for that tag.
+  - tag-list hyperlinked to artifacts for that tag.
   - switching php dependancies to composer
   - removing Pikaday dependancies
 - 1.2.0
