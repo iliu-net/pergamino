@@ -13,11 +13,13 @@ if [ -z "$root_passwd" ] || [ -z "$db_host" ] ; then
 fi
 
 apphome=$(readlink -f $(dirname $0)/..)
-appname=$(basename "$apphome")
 
 param() {
   local configs="$apphome/config/config.ini"
-  (echo "$apphome"| grep -q 'Dev$') && configs="$configs $apphome/config/nonprod-config.ini"
+  (echo "$apphome"| grep -q -E 'Dev(/|$)') && configs="$configs $apphome/config/nonprod-config.ini"
+  [ -f $(echo $apphome | cut -d/ -f1-3)/config.ini ] \
+      && configs="$configs $(echo $apphome | cut -d/ -f1-3)/config.ini"
+
   awk -vFS='=' '
     $1 == "'$1'" {
       res = ""
